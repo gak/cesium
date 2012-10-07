@@ -1077,7 +1077,6 @@ define([
         var length = polylines.length;
         for ( var i = 0; i < length; ++i) {
             var polyline = polylines[i];
-            var color = polyline.getColor();
             var show = polyline.getShow();
             var outlineColor = polyline.getOutlineColor();
             var pickColor = polyline.getPickId(context).unnormalizedRgb;
@@ -1085,6 +1084,7 @@ define([
             var positionsLength = positions.length;
             for ( var j = 0; j < positionsLength; ++j) {
                 var position = positions[j];
+                var color = polyline._colors[j] || polyline.getColor()
                 positionArray[positionIndex] = position.x;
                 positionArray[positionIndex + 1] = position.y;
                 if (this.mode === SceneMode.SCENE2D) {
@@ -1434,13 +1434,13 @@ define([
             positionIndex += this._getPolylineStartIndex(polyline);
 
             var index = 0;
-            var color = polyline.getColor();
-            var red = Color.floatToByte(color.red);
-            var green = Color.floatToByte(color.green);
-            var blue = Color.floatToByte(color.blue);
-            var alpha = Color.floatToByte(color.alpha);
             var colorsArray = new Uint8Array(positionsLength * 4);
             for ( var j = 0; j < positionsLength; ++j) {
+                var color = polyline._colors[j] | polyline.getColor()
+                var red = Color.floatToByte(color.red);
+                var green = Color.floatToByte(color.green);
+                var blue = Color.floatToByte(color.blue);
+                var alpha = Color.floatToByte(color.alpha);
                 colorsArray[index] = red;
                 colorsArray[index + 1] = green;
                 colorsArray[index + 2] = blue;
